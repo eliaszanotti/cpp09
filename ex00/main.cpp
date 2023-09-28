@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 13:49:26 by elias             #+#    #+#             */
-/*   Updated: 2023/09/28 15:18:43 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/28 15:49:40 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
     }
     BitcoinExchange bitcoin(argv[1]);
     bitcoin.openDataFile("data.csv");
+    bitcoin.parseInputFile();
 
     
     return (0);

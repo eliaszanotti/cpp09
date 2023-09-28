@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/28 15:17:26 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/28 16:02:53 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ class BitcoinExchange
 		std::string						_filename;
 		// Print
 		void	print(std::string const &str, int color) const;
+		// Methods
+		std::string	stringTrim(std::string const &str);
 
 	public:
 		// Constructors
@@ -38,7 +40,9 @@ class BitcoinExchange
 		~BitcoinExchange();
 
 		// Methods
-		void	openDataFile(std::string const &dataPath);
+		void		openDataFile(std::string const &dataPath);
+		void		parseInputFile(void);
+		bool		checkDateFormat(std::string const &date);
 };
 
 #endif
