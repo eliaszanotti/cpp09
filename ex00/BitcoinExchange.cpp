@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/28 15:17:20 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/28 15:26:15 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ void BitcoinExchange::openDataFile(std::string const &dataPath)
 	std::ifstream	infile;
 	infile.open(dataPath.c_str(), std::ios::in);
 	if (infile.fail())
-		throw (std::exception());
-
+	{
+		std::cout << "\e[31m[ERROR]\e[0m Failed to open: " << dataPath << std::endl;
+		return ;
+	}
 	std::string	date;
 	std::string	value;
 	while (!infile.eof())
