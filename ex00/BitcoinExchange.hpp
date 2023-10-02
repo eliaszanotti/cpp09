@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 14:48:30 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 15:05:00 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ class BitcoinExchange
 		std::string	stringTrim(std::string const &str);
 		void		checkCurrentLine(std::string &line, size_t lineCount);
 		bool		checkDateFormat(std::string date);
+		void		searchDate(std::string &date);
+		std::string	decreaseDate(std::string &date);
 
 	public:
 		// Constructors

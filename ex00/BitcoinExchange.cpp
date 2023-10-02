@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 14:54:19 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 15:24:04 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 {
 	std::stringstream ss;
 	ss << lineCount;
-	std::cout << line << std::endl;
 	if (line.empty())
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m empty line");
 	size_t	pos = line.find('|');
@@ -88,7 +87,7 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
 	if (valueDouble == HUGE_VAL)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
-	std::cout << date << std::endl;
+	this->searchDate(date);
 }
 
 bool BitcoinExchange::checkDateFormat(std::string date)
@@ -115,6 +114,48 @@ bool BitcoinExchange::checkDateFormat(std::string date)
 	if (datesArray[2] < 1 || datesArray[2] > 31)
 		return (false);
 	return (true);
+}
+
+void BitcoinExchange::searchDate(std::string &date)
+{
+	std::map<std::string, double>::iterator	mapIterator;
+
+	mapIterator = this->_dataMap.find(date);
+	while (mapIterator == this->_dataMap.end())
+	{
+		date = this->decreaseDate(date);
+		mapIterator = this->_dataMap.find(date);
+		break;
+	}
+}
+
+std::string BitcoinExchange::decreaseDate(std::string &date)
+{
+	std::string	datesString[3];
+	int			datesInt[3];
+	datesInt[0]	= strtol(date.substr(0, 4).c_str(), NULL, 10);
+	datesInt[1]	= strtol(date.substr(5, 2).c_str(), NULL, 10);
+	datesInt[2]	= strtol(date.substr(8, 2).c_str(), NULL, 10);
+
+	std::stringstream stream[3];
+
+
+	if (datesInt[2] > 1 && datesInt[2] <= 31)
+	{
+		datesInt[2]--;
+		stream[0] << datesInt[0];
+		stream[0] >> datesString[0];
+		stream[1] << datesInt[1];
+		stream[1] >> datesString[1];
+		stream[2] << datesInt[2];
+		stream[2] >> datesString[2];
+	}
+	std::cout << datesString[0] << "-" << datesString[1] << "-" << datesString[2] << std::endl;
+
+	
+
+
+	return (date);
 }
 
 // Methods
