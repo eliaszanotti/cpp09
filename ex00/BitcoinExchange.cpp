@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 14:44:24 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:48:34 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,32 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
 }
 
+bool BitcoinExchange::checkDateFormat(std::string date)
+{
+	if (date.length() != 10)
+		return (false);
+	int		datesArray[3];
+	size_t	pos = 0;
+	size_t	i = 0;
+	for (i = 0; i < 3; i++)
+	{
+		pos = date.find('-');
+		if ((pos == 4 || pos == 7) && date[pos] != '-')
+			return (false);
+		datesArray[i] = strtol(date.substr(0, pos).c_str(), NULL, 10);
+		date.erase(0, pos + 1);
+	}
+	if (i != 3 || !datesArray[0] || !datesArray[1] || !datesArray[2])
+		return (false);
+	if (datesArray[0] > 2022 || datesArray[0] < 2009)
+		return (false);
+	if (datesArray[1] < 1 || datesArray[1] > 12)
+		return (false);
+	if (datesArray[2] < 1 || datesArray[2] > 31)
+		return (false);
+	return (true);
+}
+
 // Methods
 void BitcoinExchange::openDataFile(std::string const &dataPath)
 {
@@ -134,30 +160,4 @@ void BitcoinExchange::parseInputFile(void)
 			std::cerr << "\e[31m[ERROR]\e[0m " << error.what() << '\n';
 		}
 	}
-}
-
-bool BitcoinExchange::checkDateFormat(std::string date)
-{
-	if (date.length() != 10)
-		return (false);
-	int		datesArray[3];
-	size_t	pos = 0;
-	size_t	i = 0;
-	for (i = 0; i < 3; i++)
-	{
-		pos = date.find('-');
-		if ((pos == 4 || pos == 7) && date[pos] != '-')
-			return (false);
-		datesArray[i] = strtol(date.substr(0, pos).c_str(), NULL, 10);
-		date.erase(0, pos + 1);
-	}
-	if (i != 3 || !datesArray[0] || !datesArray[1] || !datesArray[2])
-		return (false);
-	if (datesArray[0] > 2022 || datesArray[0] < 2009)
-		return (false);
-	if (datesArray[1] < 1 || datesArray[1] > 12)
-		return (false);
-	if (datesArray[2] < 1 || datesArray[2] > 31)
-		return (false);
-	return (true);
 }
