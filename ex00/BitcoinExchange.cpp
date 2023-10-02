@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 16:10:31 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 16:15:49 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 	double		valueDouble = strtod(value.c_str(), NULL);
 	if (valueDouble < 0)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
-	if (valueDouble == HUGE_VAL)
-		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
+	if (valueDouble > 1000)
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value (max = 1000) => " + value);
 	this->searchDate(date, valueDouble);
 }
 
