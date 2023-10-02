@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 15:24:04 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 16:10:31 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
 	if (valueDouble == HUGE_VAL)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
-	this->searchDate(date);
+	this->searchDate(date, valueDouble);
 }
 
 bool BitcoinExchange::checkDateFormat(std::string date)
@@ -116,45 +116,52 @@ bool BitcoinExchange::checkDateFormat(std::string date)
 	return (true);
 }
 
-void BitcoinExchange::searchDate(std::string &date)
+void BitcoinExchange::searchDate(std::string &date, double value)
 {
 	std::map<std::string, double>::iterator	mapIterator;
 
+	std::cout << date << " => " << std::flush;
 	mapIterator = this->_dataMap.find(date);
 	while (mapIterator == this->_dataMap.end())
 	{
 		date = this->decreaseDate(date);
 		mapIterator = this->_dataMap.find(date);
-		break;
 	}
+	std::cout << value << " = " << std::setprecision(7) << mapIterator->second * value << std::endl;
 }
 
 std::string BitcoinExchange::decreaseDate(std::string &date)
 {
+	std::stringstream stream[3];
 	std::string	datesString[3];
 	int			datesInt[3];
 	datesInt[0]	= strtol(date.substr(0, 4).c_str(), NULL, 10);
 	datesInt[1]	= strtol(date.substr(5, 2).c_str(), NULL, 10);
 	datesInt[2]	= strtol(date.substr(8, 2).c_str(), NULL, 10);
-
-	std::stringstream stream[3];
-
-
-	if (datesInt[2] > 1 && datesInt[2] <= 31)
-	{
+	if (datesInt[2] > 1)
 		datesInt[2]--;
-		stream[0] << datesInt[0];
-		stream[0] >> datesString[0];
-		stream[1] << datesInt[1];
-		stream[1] >> datesString[1];
-		stream[2] << datesInt[2];
-		stream[2] >> datesString[2];
+	else if (datesInt[2] <= 1)
+	{
+		datesInt[2] = 31;
+		if (datesInt[1] <= 1)
+		{
+			datesInt[0]--;
+			datesInt[1] = 12;
+		}
+		else
+			datesInt[1]--;
 	}
-	std::cout << datesString[0] << "-" << datesString[1] << "-" << datesString[2] << std::endl;
-
-	
-
-
+	stream[0] << datesInt[0];
+	stream[0] >> datesString[0];
+	stream[1] << datesInt[1];
+	stream[1] >> datesString[1];
+	stream[2] << datesInt[2];
+	stream[2] >> datesString[2];
+	if (datesString[1].length() < 2)
+		datesString[1] = "0" + datesString[1];
+	if (datesString[2].length() < 2)
+		datesString[2] = "0" + datesString[2];
+	date =  datesString[0] + "-" + datesString[1] + "-" + datesString[2];
 	return (date);
 }
 
