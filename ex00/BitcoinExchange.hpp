@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/28 16:02:53 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:34:28 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 # include <iostream>
 # include <sstream>
 # include <fstream>
-# include <string>
 # include <map>
-// # include <iomanip>
-# include <cstdlib>
+# include <math.h>
 
 class BitcoinExchange
 {
@@ -30,6 +28,7 @@ class BitcoinExchange
 		void	print(std::string const &str, int color) const;
 		// Methods
 		std::string	stringTrim(std::string const &str);
+		void		checkCurrentLine(std::string &line, size_t lineCount);
 
 	public:
 		// Constructors
@@ -42,7 +41,7 @@ class BitcoinExchange
 		// Methods
 		void		openDataFile(std::string const &dataPath);
 		void		parseInputFile(void);
-		bool		checkDateFormat(std::string const &date);
+		bool		checkDateFormat(std::string date);
 };
 
 #endif

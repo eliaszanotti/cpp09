@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/28 15:58:40 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:44:24 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,35 @@ BitcoinExchange::~BitcoinExchange()
 	this->print("deleted", 1);
 }
 
+// Private Methods
+std::string BitcoinExchange::stringTrim(std::string const &str)
+{
+	size_t start = str.find_first_not_of(" \t");
+	size_t end = str.find_last_not_of(" \t");
+	return (str.substr(start, end - start + 1));
+}
+
+void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
+{
+	std::stringstream ss;
+	ss << lineCount;
+	std::cout << line << std::endl;
+	if (line.empty())
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m empty line");
+	size_t	pos = line.find('|');
+	if (pos == std::string::npos)
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m wrong value (YYYY-MM-DD)");
+	std::string	date = this->stringTrim(line.substr(0, pos));
+	if (!this->checkDateFormat(date))
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m bad input => " + date);
+	std::string	value = this->stringTrim(line.substr(pos + 1, line.size() - pos));
+	double		valueDouble = strtod(value.c_str(), NULL);
+	if (valueDouble < 0)
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
+	if (valueDouble == HUGE_VAL)
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
+}
+
 // Methods
 void BitcoinExchange::openDataFile(std::string const &dataPath)
 {
@@ -71,7 +100,6 @@ void BitcoinExchange::openDataFile(std::string const &dataPath)
 		std::cout << "\e[31m[ERROR]\e[0m Failed to open: " << dataPath << std::endl;
 		return ;
 	}
-
 	std::string	date;
 	std::string	value;
 	while (!infile.eof())
@@ -92,55 +120,44 @@ void BitcoinExchange::parseInputFile(void)
 		std::cout << "\e[31m[ERROR]\e[0m Failed to open: " << this->_filename << std::endl;
 		return ;
 	}
-
 	std::string	line;
-	size_t		pos = 0;
+	size_t		lineCount = 0;
 	while (!infile.eof())
 	{
 		getline(infile, line);
-		pos = line.find('|');
-		line = line.substr(0, pos);
-		line = this->stringTrim(line);
-		if (!this->checkDateFormat(line))
-			std::cout << "NUN" << std::endl;
-
-
+		try
+		{
+			this->checkCurrentLine(line, lineCount++);
+		}
+		catch(const std::exception& error)
+		{
+			std::cerr << "\e[31m[ERROR]\e[0m " << error.what() << '\n';
+		}
 	}
-
-
-
 }
 
-bool BitcoinExchange::checkDateFormat(std::string const &date)
+bool BitcoinExchange::checkDateFormat(std::string date)
 {
-
-	std::cout << date << std::endl;
-
 	if (date.length() != 10)
-	{
-		std::cout << "ok" << std::endl;
-		
 		return (false);
-	}
-	
-	// int		datesArray[3];
+	int		datesArray[3];
 	size_t	pos = 0;
-	for (size_t i = 0; i < 3; i++)
+	size_t	i = 0;
+	for (i = 0; i < 3; i++)
 	{
 		pos = date.find('-');
 		if ((pos == 4 || pos == 7) && date[pos] != '-')
 			return (false);
-		// datesArray[i] = strtol(date.substr(0, pos).c_str());
-
-
+		datesArray[i] = strtol(date.substr(0, pos).c_str(), NULL, 10);
+		date.erase(0, pos + 1);
 	}
-
+	if (i != 3 || !datesArray[0] || !datesArray[1] || !datesArray[2])
+		return (false);
+	if (datesArray[0] > 2022 || datesArray[0] < 2009)
+		return (false);
+	if (datesArray[1] < 1 || datesArray[1] > 12)
+		return (false);
+	if (datesArray[2] < 1 || datesArray[2] > 31)
+		return (false);
 	return (true);
-}
-
-std::string BitcoinExchange::stringTrim(std::string const &str)
-{
-	size_t start = str.find_first_not_of(" \t");
-	size_t end = str.find_last_not_of(" \t");
-	return (str.substr(start, end - start + 1));
 }
