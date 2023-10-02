@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/02 14:48:34 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/02 14:54:19 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
 	if (valueDouble == HUGE_VAL)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value => " + value);
+	std::cout << date << std::endl;
 }
 
 bool BitcoinExchange::checkDateFormat(std::string date)
@@ -122,10 +123,7 @@ void BitcoinExchange::openDataFile(std::string const &dataPath)
 	std::ifstream	infile;
 	infile.open(dataPath.c_str(), std::ios::in);
 	if (infile.fail())
-	{
-		std::cout << "\e[31m[ERROR]\e[0m Failed to open: " << dataPath << std::endl;
-		return ;
-	}
+		throw std::invalid_argument("\e[31m[ERROR]\e[0m Failed to open => " + dataPath);
 	std::string	date;
 	std::string	value;
 	while (!infile.eof())
@@ -142,10 +140,7 @@ void BitcoinExchange::parseInputFile(void)
 	std::ifstream	infile;
 	infile.open(this->_filename.c_str(), std::ios::in);
 	if (infile.fail())
-	{
-		std::cout << "\e[31m[ERROR]\e[0m Failed to open: " << this->_filename << std::endl;
-		return ;
-	}
+		throw std::invalid_argument("\e[31m[ERROR]\e[0m Failed to open => " + this->_filename);
 	std::string	line;
 	size_t		lineCount = 0;
 	while (!infile.eof())
