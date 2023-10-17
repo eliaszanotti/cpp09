@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/17 12:36:38 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/17 12:38:33 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,12 @@ void RPN::convertToStack(void)
 {
 	std::istringstream	iss(this->_input);
 	std::string 		element;
-	bool				lastIsOperator = false;
 	try
 	{
 		while (getline(iss, element, ' '))
 		{
 			if (this->_isOperator(element[0]))
-			{
 				this->_stack.push(this->_calculate(element[0]));
-				lastIsOperator = true;
-			}
 			else
 			{
 				if (!isdigit(element[0]))
@@ -134,11 +130,8 @@ void RPN::convertToStack(void)
 				if (element.size() > 1)
 					throw (std::runtime_error("number sould be between 0 and 9"));
 				this->_stack.push(std::strtol(element.c_str(), NULL, 10));
-				lastIsOperator = false;
 			}
 		}
-		if (!lastIsOperator)
-			throw (std::runtime_error("last char is not an operator"));
 		if (this->_stack.size() > 1)
 			throw (std::runtime_error("too much operands"));
 		std::cout << this->_stack.top() << std::endl;
