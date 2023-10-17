@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/17 11:48:18 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/17 12:36:38 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	RPN::_calculate(char charOperator)
 		throw (std::runtime_error("two operands are required"));
 	double	result;
 	double	operands[2];
-	operands[0] = this->_stack.top();
-	this->_stack.pop();
 	operands[1] = this->_stack.top();
+	this->_stack.pop();
+	operands[0] = this->_stack.top();
 	this->_stack.pop();
 	switch (charOperator)
 	{
@@ -129,8 +129,6 @@ void RPN::convertToStack(void)
 			}
 			else
 			{
-				if (this->_stack.size() == 2)
-					throw (std::runtime_error("too much operands"));
 				if (!isdigit(element[0]))
 					throw (std::runtime_error("non numeric character"));
 				if (element.size() > 1)
@@ -141,6 +139,8 @@ void RPN::convertToStack(void)
 		}
 		if (!lastIsOperator)
 			throw (std::runtime_error("last char is not an operator"));
+		if (this->_stack.size() > 1)
+			throw (std::runtime_error("too much operands"));
 		std::cout << this->_stack.top() << std::endl;
 	}
 	catch(const std::exception& error)
