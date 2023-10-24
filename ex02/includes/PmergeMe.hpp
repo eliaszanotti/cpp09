@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 15:53:36 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 16:18:56 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <cstring>
 # include <vector>
 # include <deque>
+# include <stdlib.h>
+# include <sys/time.h>
 
 template <typename T>
 class PmergeMe
