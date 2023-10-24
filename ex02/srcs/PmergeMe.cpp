@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 14:03:28 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 15:53:21 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ PmergeMe<T>::PmergeMe()
 }
 
 template <typename T>
-PmergeMe<T>::PmergeMe(T const &unsorted)
+PmergeMe<T>::PmergeMe(std::string name)
 {
-	this->_unsorted = unsorted;
-	this->print("created", 2);
+	std::cout << name << std::endl;
 }
 
 template <typename T>
@@ -68,4 +67,37 @@ PmergeMe<T>::~PmergeMe()
 	this->print("deleted", 1);
 }
 
+template <typename T>
+T const &PmergeMe<T>::getUnsorted() const
+{
+	return (this->_unsorted);
+}
+
+template <typename T>
+T const &PmergeMe<T>::getSorted() const
+{
+	return (this->_sorted);
+}
+
 // Methods
+template <typename T>
+void PmergeMe<T>::parseArgs(int argc, char **argv)
+{
+	for (size_t i = 0; i < argc; i++)
+	{
+		for (size_t j = 0; j < std::strlen(argv[i]); j++)
+		{
+			if (!std::isdigit(argv[i][j]))
+				throw (std::invalid_argument("Not a number"));
+		}
+
+		this->_unsorted.push_back(argv[i]);
+	}
+}
+
+template <typename T>
+void PmergeMe<T>::mergeSort()
+{
+
+	
+}

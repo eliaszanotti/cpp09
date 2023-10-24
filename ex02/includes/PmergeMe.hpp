@@ -6,17 +6,18 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 13:56:21 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 15:53:36 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PMERGEME_CLASS_H
-# define PMERGEME_CLASS_H
+#ifndef PMERGEME_CLASS_HPP
+# define PMERGEME_CLASS_HPP
 
 # include <iostream>
 # include <string>
-// # include <vector>
-// # include <deque>
+# include <cstring>
+# include <vector>
+# include <deque>
 
 template <typename T>
 class PmergeMe
@@ -30,13 +31,18 @@ class PmergeMe
 	public:
 		// Constructors
 		PmergeMe();
-		PmergeMe(T const &unsorted);
+		PmergeMe(std::string name);
 		PmergeMe(PmergeMe const &copy);
 		PmergeMe const	&operator=(PmergeMe const &copy);
 		~PmergeMe();
 
+		// Getters
+		T const	&getUnsorted() const;
+		T const	&getSorted() const;
+
 		// Methods
-		
+		void	parseArgs(int argc, char **argv);
+		void	mergeSort();
 };
 
 #endif

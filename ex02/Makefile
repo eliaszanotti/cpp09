@@ -6,11 +6,12 @@
 #    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/16 17:08:00 by elias             #+#    #+#              #
-#    Updated: 2023/10/24 13:05:30 by elias            ###   ########.fr        #
+#    Updated: 2023/10/24 15:53:48 by elias            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-S_SRC		= main.cpp	\
+S_SRC		= main.cpp		\
+			PmergeMe.cpp	\
 
 S_TMP		= ${addprefix ${D_SRC}, ${S_SRC}}
 O_SRC		= $(patsubst %.cpp, ${D_OBJS}%.o, $(S_TMP))
@@ -29,7 +30,7 @@ PRINT		= printf
 
 # DIRECTORIES
 D_OBJS		= .objs/
-D_SRC		= ./
+D_SRC		= srcs/
 D_INC		= includes/
 
 # COLORS
