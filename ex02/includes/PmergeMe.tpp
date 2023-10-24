@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 16:04:48 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 16:18:28 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,17 @@ T const &PmergeMe<T>::getSorted() const
 template <typename T>
 void PmergeMe<T>::parseArgs(int argc, char **argv)
 {
-	for (size_t i = 0; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 	{
 		for (size_t j = 0; j < std::strlen(argv[i]); j++)
 		{
 			if (!std::isdigit(argv[i][j]))
 				throw (std::invalid_argument("Not a number"));
 		}
-
-		this->_unsorted.push_back(argv[i]);
+		long	number = std::strtol(argv[i], NULL, 10);
+		if (number > 2147483647)
+			throw (std::invalid_argument("Overflow"));
+		this->_unsorted.push_back(number);
 	}
 }
 
