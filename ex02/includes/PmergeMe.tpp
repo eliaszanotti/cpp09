@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*   PmergeMe.tpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 15:53:21 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 16:04:48 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void PmergeMe<T>::print(std::string const &str, int color) const
 		colorsString = oss.str();
 	}
 	if (str.empty())
-		std::cout << colorsString << "[PmergeMe " << this->_name << "] " << reset;
+		std::cout << colorsString << "[PmergeMe] " << reset;
 	else
-		std::cout << colorsString << "[PmergeMe " << this->_name << "] " << reset << str << std::endl;
+		std::cout << colorsString << "[PmergeMe] " << reset << str << std::endl;
 }
 
 // Constructors

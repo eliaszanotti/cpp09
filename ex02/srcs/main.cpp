@@ -6,11 +6,12 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 14:09:53 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 15:53:04 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 16:04:22 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
+#include "PmergeMe.tpp"
 #include <vector>
 #include <deque>
 
