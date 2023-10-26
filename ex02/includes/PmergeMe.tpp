@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 13:52:17 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 14:11:48 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,13 @@ T const &PmergeMe<T>::getSorted(void) const
 template <typename T>
 void	PmergeMe<T>::_display(T container) const
 {
-	for (size_t i = 0; i < container.size(); i++)
+	size_t	size = container.size();
+	if (container.size() > 10)
+		size = 10;
+	for (size_t i = 0; i < size; i++)
 		std::cout << "\e[36m[" << container[i] << "]\e[0m" << std::flush;
+	if (size == 10)
+		std::cout << "\e[36m...\e[0m" << std::flush;
 	std::cout << std::endl;
 }
 
@@ -116,8 +121,8 @@ void	PmergeMe<T>::_sortRecursive(int begin, int end)
 template <typename T>
 void PmergeMe<T>::_mergeSort(int begin, int middle, int end)
 {
-	T	left(this->_unsorted.begin() + begin, this->_unsorted.begin() + middle + 1);
-	T	right(this->_unsorted.begin() + middle + 1, this->_unsorted.begin() + end + 1);
+	T	left(this->_sorted.begin() + begin, this->_sorted.begin() + middle + 1);
+	T	right(this->_sorted.begin() + middle + 1, this->_sorted.begin() + end + 1);
 
 	int	n1 = middle - begin + 1;
 	int	n2 = end - middle;
@@ -182,6 +187,7 @@ void	PmergeMe<T>::parseArgs(int argc, char **argv)
 			throw (std::invalid_argument("Overflow"));
 		this->_unsorted.push_back(number);
 	}
+	this->_sorted = this->_unsorted;
 }
 
 template <typename T>
@@ -190,15 +196,19 @@ void PmergeMe<T>::sort(void)
 	clock_t	start, finish;
 	double	timeDiff;
 
-	std::cout << "\e[33m[Sorted Array]\e[0m" << std::endl;
+	std::cout << "\e[33m[Unsorted Array] = \e[0m" << std::flush;
 	this->_display(this->_unsorted);
+
 	start = clock();
 	this->_sortRecursive(0, this->_unsorted.size() - 1);
 	finish = clock();
-	this->_display(this->_sorted);
 	timeDiff = ((double) (finish - start)) / CLOCKS_PER_SEC;
 	std::cout << "\e[32m[Time to process a range of " \
 		<< this->_unsorted.size() << " elements with a " \
 		<< this->_getTypeName(typeid(this->_unsorted).name()) << " is " \
 		<< std::fixed << timeDiff << std::endl;
+
+	std::cout << "\e[33m[Sorted Array]   = \e[0m" << std::flush;
+	this->_display(this->_sorted);
+	std::cout << std::endl;
 }
