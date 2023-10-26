@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 13:52:17 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 13:57:01 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,22 +129,22 @@ void PmergeMe<T>::_mergeSort(int begin, int middle, int end)
 	{
 		if (right_i == n2)
 		{
-			this->_sorted[i] = left[left_i];
+			this->_unsorted[i] = left[left_i];
 			left_i++;
 		}
 		else if (left_i == n1)
 		{
-			this->_sorted[i] = right[right_i];
+			this->_unsorted[i] = right[right_i];
 			right_i++;
 		}
 		else if (right[right_i] > left[left_i])
 		{
-			this->_sorted[i] = left[left_i];
+			this->_unsorted[i] = left[left_i];
 			left_i++;
 		}
 		else
 		{
-			this->_sorted[i] = right[right_i];
+			this->_unsorted[i] = right[right_i];
 			right_i++;
 		}
 	}
@@ -155,14 +155,14 @@ void	PmergeMe<T>::_insertSort(int begin, int end)
 {
 	for (int i = begin; i < end; i++)
 	{
-		int	swap = this->_sorted[i + 1];
+		int	swap = this->_unsorted[i + 1];
 		int	j = i + 1;
-		while (j > begin && this->_sorted[j - 1] > swap)
+		while (j > begin && this->_unsorted[j - 1] > swap)
 		{
-			this->_sorted[j] = this->_sorted[j - 1]; 
+			this->_unsorted[j] = this->_unsorted[j - 1]; 
 			j--;
 		}
-		this->_sorted[j] = swap;
+		this->_unsorted[j] = swap;
 	}
 }
 
@@ -193,9 +193,10 @@ void PmergeMe<T>::sort(void)
 	std::cout << "\e[33m[Sorted Array]\e[0m" << std::endl;
 	this->_display(this->_unsorted);
 	start = clock();
+	std::cout << "ok" << std::endl;
 	this->_sortRecursive(0, this->_unsorted.size() - 1);
 	finish = clock();
-	this->_display(this->_sorted);
+	this->_display(this->_unsorted);
 	timeDiff = ((double) (finish - start)) / CLOCKS_PER_SEC;
 	std::cout << "\e[32m[Time to process a range of " \
 		<< this->_unsorted.size() << " elements with a " \
