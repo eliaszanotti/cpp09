@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 14:11:48 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 14:15:03 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,36 +121,34 @@ void	PmergeMe<T>::_sortRecursive(int begin, int end)
 template <typename T>
 void PmergeMe<T>::_mergeSort(int begin, int middle, int end)
 {
+	int	n1 = middle - begin + 1;
+	int	n2 = end - middle;
+	int	rightIndex = 0;
+	int	leftIndex = 0;
 	T	left(this->_sorted.begin() + begin, this->_sorted.begin() + middle + 1);
 	T	right(this->_sorted.begin() + middle + 1, this->_sorted.begin() + end + 1);
 
-	int	n1 = middle - begin + 1;
-	int	n2 = end - middle;
-	int	right_i = 0;
-	int	left_i = 0;
-
-
 	for (int i = begin; i < end; i++)
 	{
-		if (right_i == n2)
+		if (rightIndex == n2)
 		{
-			this->_sorted[i] = left[left_i];
-			left_i++;
+			this->_sorted[i] = left[leftIndex];
+			leftIndex++;
 		}
-		else if (left_i == n1)
+		else if (leftIndex == n1)
 		{
-			this->_sorted[i] = right[right_i];
-			right_i++;
+			this->_sorted[i] = right[rightIndex];
+			rightIndex++;
 		}
-		else if (right[right_i] > left[left_i])
+		else if (right[rightIndex] > left[leftIndex])
 		{
-			this->_sorted[i] = left[left_i];
-			left_i++;
+			this->_sorted[i] = left[leftIndex];
+			leftIndex++;
 		}
 		else
 		{
-			this->_sorted[i] = right[right_i];
-			right_i++;
+			this->_sorted[i] = right[rightIndex];
+			rightIndex++;
 		}
 	}
 }
@@ -160,14 +158,14 @@ void	PmergeMe<T>::_insertSort(int begin, int end)
 {
 	for (int i = begin; i < end; i++)
 	{
-		int	swap = this->_sorted[i + 1];
+		int	tempValue = this->_sorted[i + 1];
 		int	j = i + 1;
-		while (j > begin && this->_sorted[j - 1] > swap)
+		while (j > begin && this->_sorted[j - 1] > tempValue)
 		{
 			this->_sorted[j] = this->_sorted[j - 1]; 
 			j--;
 		}
-		this->_sorted[j] = swap;
+		this->_sorted[j] = tempValue;
 	}
 }
 
@@ -206,7 +204,7 @@ void PmergeMe<T>::sort(void)
 	std::cout << "\e[32m[Time to process a range of " \
 		<< this->_unsorted.size() << " elements with a " \
 		<< this->_getTypeName(typeid(this->_unsorted).name()) << " is " \
-		<< std::fixed << timeDiff << std::endl;
+		<< std::fixed << timeDiff << "]" << std::endl;
 
 	std::cout << "\e[33m[Sorted Array]   = \e[0m" << std::flush;
 	this->_display(this->_sorted);
