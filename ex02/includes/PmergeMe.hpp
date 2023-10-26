@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 16:18:56 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 12:14:58 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 # include <vector>
 # include <deque>
 # include <stdlib.h>
+# include <typeinfo>
 # include <sys/time.h>
+
+# define K 5
 
 template <typename T>
 class PmergeMe
@@ -29,6 +32,9 @@ class PmergeMe
 		T	_sorted;
 		// Print
 		void	print(std::string const &str, int color) const;
+		// Methods
+		std::string	_getTypeName(std::string typeName) const;
+		void		_sortRecursive(int begin, int end);
 
 	public:
 		// Constructors
@@ -39,12 +45,13 @@ class PmergeMe
 		~PmergeMe();
 
 		// Getters
-		T const	&getUnsorted() const;
-		T const	&getSorted() const;
+		T const	&getUnsorted(void) const;
+		T const	&getSorted(void) const;
 
 		// Methods
 		void	parseArgs(int argc, char **argv);
-		void	mergeSort();
+		void	sort(void);
+		void	mergeSort(void);
 };
 
 #endif

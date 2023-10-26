@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 16:18:28 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 12:17:15 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,43 @@ PmergeMe<T>::~PmergeMe()
 }
 
 template <typename T>
-T const &PmergeMe<T>::getUnsorted() const
+T const &PmergeMe<T>::getUnsorted(void) const
 {
 	return (this->_unsorted);
 }
 
 template <typename T>
-T const &PmergeMe<T>::getSorted() const
+T const &PmergeMe<T>::getSorted(void) const
 {
 	return (this->_sorted);
 }
 
-// Methods
+// Private Methods
+template <typename T>
+std::string	PmergeMe<T>::_getTypeName(std::string typeName) const
+{
+	if (typeName == "St6vectorIiSaIiEE")
+        return ("std::vector<int>");
+	if (typeName == "St5dequeIiSaIiEE")
+		return ("std::deque<int>");
+	return (typeName);
+}
+
+template <typename T>
+void	PmergeMe<T>::_sortRecursive(int begin, int end)
+{
+	if (end - begin > K)
+	{
+		int middle = (begin + end) / 2;
+		this->_sortRecursive(begin, middle);
+		this->_sortRecursive(middle + 1, end);
+		this->mergeSort(begin, middle, end);
+	}
+	else
+		this->insertSort(begin, end);
+}
+
+// Public Methods:what
 template <typename T>
 void PmergeMe<T>::parseArgs(int argc, char **argv)
 {
@@ -98,8 +123,33 @@ void PmergeMe<T>::parseArgs(int argc, char **argv)
 }
 
 template <typename T>
-void PmergeMe<T>::mergeSort()
+void PmergeMe<T>::sort(void)
 {
+	clock_t	start, finish;
+	double	timeDiff;
 
-	
+	std::cout << "\e[33m[Sorted Array]\e[0m" << std::endl;
+	start = clock();
+	// this->_sortRecursive();
+	finish = clock();
+	timeDiff = ((double) (finish - start)) / CLOCKS_PER_SEC;
+	std::cout << "\e[32m[Time to process a range of " \
+		<< this->_unsorted.size() << " elements with a " \
+		<< this->_getTypeName(typeid(this->_unsorted).name()) << " is " \
+		<< std::fixed << timeDiff << std::endl;
 }
+
+// template <typename T>
+// void PmergeMe<T>::mergeSort(int begin, int middle, int end)
+// {
+// 	T	left(this->_unsorted.begin() + begin, this->_unsorted.begin() + middle + 1);
+// 	T	right(this->_unsorted.begin() + middle + 1, this->_unsorted.begin() + end + 1);
+
+
+
+// 	// int	begin;
+// 	// int	end;
+// 	// begin = 0;
+// 	// end = this->_unsorted.size() - 1;
+	
+// }
