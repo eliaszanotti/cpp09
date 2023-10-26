@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 12:17:15 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 13:52:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ PmergeMe<T>::PmergeMe()
 }
 
 template <typename T>
-PmergeMe<T>::PmergeMe(std::string name)
+PmergeMe<T>::PmergeMe(int argc, char **argv)
 {
-	std::cout << name << std::endl;
+	this->parseArgs(argc, argv);
+	this->print("created and parsed", 2);
 }
 
 template <typename T>
@@ -81,6 +82,14 @@ T const &PmergeMe<T>::getSorted(void) const
 
 // Private Methods
 template <typename T>
+void	PmergeMe<T>::_display(T container) const
+{
+	for (size_t i = 0; i < container.size(); i++)
+		std::cout << "\e[36m[" << container[i] << "]\e[0m" << std::flush;
+	std::cout << std::endl;
+}
+
+template <typename T>
 std::string	PmergeMe<T>::_getTypeName(std::string typeName) const
 {
 	if (typeName == "St6vectorIiSaIiEE")
@@ -98,15 +107,68 @@ void	PmergeMe<T>::_sortRecursive(int begin, int end)
 		int middle = (begin + end) / 2;
 		this->_sortRecursive(begin, middle);
 		this->_sortRecursive(middle + 1, end);
-		this->mergeSort(begin, middle, end);
+		this->_mergeSort(begin, middle, end);
 	}
 	else
-		this->insertSort(begin, end);
+		this->_insertSort(begin, end);
 }
 
-// Public Methods:what
 template <typename T>
-void PmergeMe<T>::parseArgs(int argc, char **argv)
+void PmergeMe<T>::_mergeSort(int begin, int middle, int end)
+{
+	T	left(this->_unsorted.begin() + begin, this->_unsorted.begin() + middle + 1);
+	T	right(this->_unsorted.begin() + middle + 1, this->_unsorted.begin() + end + 1);
+
+	int	n1 = middle - begin + 1;
+	int	n2 = end - middle;
+	int	right_i = 0;
+	int	left_i = 0;
+
+
+	for (int i = begin; i < end; i++)
+	{
+		if (right_i == n2)
+		{
+			this->_sorted[i] = left[left_i];
+			left_i++;
+		}
+		else if (left_i == n1)
+		{
+			this->_sorted[i] = right[right_i];
+			right_i++;
+		}
+		else if (right[right_i] > left[left_i])
+		{
+			this->_sorted[i] = left[left_i];
+			left_i++;
+		}
+		else
+		{
+			this->_sorted[i] = right[right_i];
+			right_i++;
+		}
+	}
+}
+
+template <typename T>
+void	PmergeMe<T>::_insertSort(int begin, int end)
+{
+	for (int i = begin; i < end; i++)
+	{
+		int	swap = this->_sorted[i + 1];
+		int	j = i + 1;
+		while (j > begin && this->_sorted[j - 1] > swap)
+		{
+			this->_sorted[j] = this->_sorted[j - 1]; 
+			j--;
+		}
+		this->_sorted[j] = swap;
+	}
+}
+
+// Public Methods
+template <typename T>
+void	PmergeMe<T>::parseArgs(int argc, char **argv)
 {
 	for (int i = 1; i < argc; i++)
 	{
@@ -129,27 +191,14 @@ void PmergeMe<T>::sort(void)
 	double	timeDiff;
 
 	std::cout << "\e[33m[Sorted Array]\e[0m" << std::endl;
+	this->_display(this->_unsorted);
 	start = clock();
-	// this->_sortRecursive();
+	this->_sortRecursive(0, this->_unsorted.size() - 1);
 	finish = clock();
+	this->_display(this->_sorted);
 	timeDiff = ((double) (finish - start)) / CLOCKS_PER_SEC;
 	std::cout << "\e[32m[Time to process a range of " \
 		<< this->_unsorted.size() << " elements with a " \
 		<< this->_getTypeName(typeid(this->_unsorted).name()) << " is " \
 		<< std::fixed << timeDiff << std::endl;
 }
-
-// template <typename T>
-// void PmergeMe<T>::mergeSort(int begin, int middle, int end)
-// {
-// 	T	left(this->_unsorted.begin() + begin, this->_unsorted.begin() + middle + 1);
-// 	T	right(this->_unsorted.begin() + middle + 1, this->_unsorted.begin() + end + 1);
-
-
-
-// 	// int	begin;
-// 	// int	end;
-// 	// begin = 0;
-// 	// end = this->_unsorted.size() - 1;
-	
-// }

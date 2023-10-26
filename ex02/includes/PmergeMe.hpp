@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 12:14:58 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 13:48:45 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,16 @@ class PmergeMe
 		// Print
 		void	print(std::string const &str, int color) const;
 		// Methods
+		void		_display(T container) const;
 		std::string	_getTypeName(std::string typeName) const;
 		void		_sortRecursive(int begin, int end);
+		void		_mergeSort(int begin, int middle, int end);
+		void		_insertSort(int begin, int end);
 
 	public:
 		// Constructors
 		PmergeMe();
-		PmergeMe(std::string name);
+		PmergeMe(int main, char **argv);
 		PmergeMe(PmergeMe const &copy);
 		PmergeMe const	&operator=(PmergeMe const &copy);
 		~PmergeMe();
@@ -51,7 +54,6 @@ class PmergeMe
 		// Methods
 		void	parseArgs(int argc, char **argv);
 		void	sort(void);
-		void	mergeSort(void);
 };
 
 #endif
