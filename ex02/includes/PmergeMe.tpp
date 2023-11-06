@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 14:18:25 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/02 15:30:19 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void PmergeMe<T>::sort(void)
 	std::cout << "\e[32m[Time to process a range of " \
 		<< this->_unsorted.size() << " elements with a " \
 		<< this->_getTypeName(typeid(this->_unsorted).name()) << " is " \
-		<< std::fixed << timeDiff << "]" << std::endl;
+		<< std::fixed << timeDiff << "s]" << std::endl;
 
 	std::cout << "\e[33m[Sorted Array]   = \e[0m" << std::flush;
 	this->_display(this->_sorted);
