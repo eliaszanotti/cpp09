@@ -78,7 +78,7 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 
 	size_t	pos = line.find('|');
 	if (pos == std::string::npos)
-		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m wrong value (YYYY-MM-DD)");
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m wrong value (YYYY-MM-DD) or no pipe");
 
 	size_t	pos2 = line.find('|', pos + 1);
 	if (pos2 != std::string::npos)
@@ -89,8 +89,15 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m bad input => " + date);
 
 	std::string	value = this->stringTrim(line.substr(pos + 1, line.size() - pos));
-	double		valueDouble = strtod(value.c_str(), NULL);
+	for (size_t i = 0; i < value.length(); i++)
+	{
+		if (value[i] == '.')
+			continue;
+		if (!isdigit(value[i]))
+			throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m bad input => " + value);
+	}
 
+	double		valueDouble = strtod(value.c_str(), NULL);
 	if (valueDouble < 0)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
 
