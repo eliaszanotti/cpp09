@@ -121,7 +121,7 @@ void RPN::convertToStack(void)
 	{
 		while (getline(iss, element, ' '))
 		{
-			if (this->_isOperator(element[0]))
+			if (this->_isOperator(element[0]) && element.size() == 1)
 				this->_stack.push(this->_calculate(element[0]));
 			else
 			{
