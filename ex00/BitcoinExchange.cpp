@@ -75,18 +75,28 @@ void BitcoinExchange::checkCurrentLine(std::string &line, size_t lineCount)
 	ss << lineCount;
 	if (line.empty())
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m empty line");
+
 	size_t	pos = line.find('|');
 	if (pos == std::string::npos)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m wrong value (YYYY-MM-DD)");
+
+	size_t	pos2 = line.find('|', pos + 1);
+	if (pos2 != std::string::npos)
+		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m double pipe");
+
 	std::string	date = this->stringTrim(line.substr(0, pos));
 	if (!this->checkDateFormat(date))
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m bad input => " + date);
+
 	std::string	value = this->stringTrim(line.substr(pos + 1, line.size() - pos));
 	double		valueDouble = strtod(value.c_str(), NULL);
+
 	if (valueDouble < 0)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m not a positive number => " + value);
+
 	if (valueDouble > 1000)
 		throw std::invalid_argument("\e[36m[" + ss.str() + "]\e[0m overflow on value (max = 1000) => " + value);
+
 	this->searchDate(date, valueDouble);
 }
 
@@ -94,9 +104,11 @@ bool BitcoinExchange::checkDateFormat(std::string date)
 {
 	if (date.length() != 10)
 		return (false);
+
 	int		datesArray[3];
 	size_t	pos = 0;
 	size_t	i = 0;
+
 	for (i = 0; i < 3; i++)
 	{
 		pos = date.find('-');
@@ -105,6 +117,7 @@ bool BitcoinExchange::checkDateFormat(std::string date)
 		datesArray[i] = strtol(date.substr(0, pos).c_str(), NULL, 10);
 		date.erase(0, pos + 1);
 	}
+
 	if (i != 3 || !datesArray[0] || !datesArray[1] || !datesArray[2])
 		return (false);
 	if (datesArray[0] > 2022 || datesArray[0] < 2009)
